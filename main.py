@@ -1,7 +1,7 @@
 """
 main.py —— 由 main.ipynb 改造而来的可直接运行脚本
 ============================================================
-DataAnalysisAgent: 基于 HelloAgents 框架的智能数据分析助手
+DataDescribeAgent: 基于 HelloAgents 框架的智能数据分析助手
   - 读取 data/simple_data.xls
   - 调用 LLM（默认 DeepSeek，可改 .env 切换其它 OpenAI 兼容模型）做清洗 / 统计 / 可视化 / 报告
   - 输出 output/echarts.html（图表）与 output/report.md（分析报告）
@@ -301,7 +301,7 @@ def save_outputs(result: str) -> None:
 <html>
 <head>
     <meta charset="utf-8">
-    <title>DataAnalysisAgent - ECharts</title>
+    <title>DataDescribeAgent - ECharts</title>
     <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
     <style>body{{font-family:-apple-system,Segoe UI,sans-serif;background:#fafafa;padding:16px;}}</style>
 </head>

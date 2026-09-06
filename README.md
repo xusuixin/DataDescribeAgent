@@ -1,10 +1,10 @@
-# DataAnalysisAgent - 智能数据分析助手
+# DataDescribeAgent - 智能数据分析助手
 
 > 基于 HelloAgents 框架（`SimpleAgent`）的智能数据分析工具：读取表格 → LLM 清洗 / 统计 / 可视化 / 报告。
 
 ## 📝 项目简介
 
-DataAnalysisAgent 是一个智能数据分析助手，能够自动分析数据、生成可视化图表（ECharts）、撰写分析报告（Markdown）。
+DataDescribeAgent 是一个智能数据分析助手，能够自动分析数据、生成可视化图表（ECharts）、撰写分析报告（Markdown）。
 本项目由 Datawhale `hello-agents` 仓库中的 `Co-creation-projects/1zrj-DataAnalysisAgent` 改造而来：
 
 - 把 `main.ipynb` 改造成可直接运行的 `main.py`
@@ -67,7 +67,7 @@ python main.py
 ## 📂 项目结构
 
 ```
-DataAnalysisAgent/
+DataDescribeAgent/
 ├── README.md           # 项目说明
 ├── requirements.txt    # 依赖列表
 ├── .gitignore          # 忽略 .env / .venv
