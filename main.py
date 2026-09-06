@@ -3,7 +3,7 @@ main.py —— 由 main.ipynb 改造而来的可直接运行脚本
 ============================================================
 DataAnalysisAgent: 基于 HelloAgents 框架的智能数据分析助手
   - 读取 data/simple_data.xls
-  - 调用 LLM（默认 ModelScope 的 Qwen 模型）做清洗 / 统计 / 可视化 / 报告
+  - 调用 LLM（默认 DeepSeek，可改 .env 切换其它 OpenAI 兼容模型）做清洗 / 统计 / 可视化 / 报告
   - 输出 output/echarts.html（图表）与 output/report.md（分析报告）
 
 相对原 notebook 的改进:
@@ -41,13 +41,14 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 # LLM 参数：环境变量优先；缺失时用默认值（base_url / model 可改，key 必须提供）
-os.environ.setdefault("LLM_MODEL_ID", "Qwen/Qwen3-8B")
-os.environ.setdefault("LLM_BASE_URL", "https://api-inference.modelscope.cn/v1/")
+# 默认使用 DeepSeek（OpenAI 兼容接口）；可在 .env 中改为任意 OpenAI 兼容服务
+os.environ.setdefault("LLM_MODEL_ID", "deepseek-chat")
+os.environ.setdefault("LLM_BASE_URL", "https://api.deepseek.com/v1")
 os.environ.setdefault("LLM_TIMEOUT", "60")
 
 if not os.environ.get("LLM_API_KEY"):
     raise SystemExit(
-        "❌ 未检测到 LLM_API_KEY。请在项目根目录创建 .env 文件并填入你的 ModelScope Key，"
+        "❌ 未检测到 LLM_API_KEY。请在项目根目录创建 .env 文件并填入你的 API Key（默认 DeepSeek），"
         "参考 .env.example。\n"
         "   复制命令:  cp .env.example .env   # Windows:  copy .env.example .env"
     )
@@ -178,7 +179,7 @@ class DataStatisticsTool(Tool):
                 }
 
             categorical_stats = {}
-            for col in df.select_dtypes(include=["object"]).columns:
+            for col in df.select_dtypes(include=["object", "string"]).columns:
                 value_counts = df[col].value_counts().head(10).to_dict()
                 categorical_stats[col] = {
                     "unique_count": int(df[col].nunique()),

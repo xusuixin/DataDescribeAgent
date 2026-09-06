@@ -8,3 +8,6 @@ venv/
 # 编译缓存
 __pycache__/
 *.pyc
+
+# hello_agents 运行产生的 trace 文件
+memory/

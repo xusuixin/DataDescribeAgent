@@ -15,85 +15,168 @@
     <script type="text/javascript">
     var c0 = echarts.init(document.getElementById('chart_0'));
     var option0 = {
-    title: { text: '各类居民消费价格指数月度走势（2025年6月-10月）' },
-    tooltip: { trigger: 'axis' },
-    legend: { top: 30, type: 'scroll' },
-    grid: { left: 60, right: 30, top: 80, bottom: 40 },
+    title: {
+        text: '居民消费价格指数(CPI)总体及各分类月度走势（2025年6-10月）',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['CPI总体', '食品烟酒', '衣着', '居住', '生活用品及服务', '交通通信', '教育文化娱乐', '医疗保健', '其他用品及服务', '非食品', '消费品', '服务', '不包括食品能源'],
+        type: 'scroll',
+        bottom: 0
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '15%',
+        containLabel: true
+    },
     xAxis: {
         type: 'category',
         data: ['2025年6月', '2025年7月', '2025年8月', '2025年9月', '2025年10月']
     },
-    yAxis: { type: 'value', name: '指数(上年同月=100)' },
+    yAxis: {
+        type: 'value',
+        name: '指数(上年同月=100)',
+        scale: true
+    },
     series: [
-        { name: '居民消费价格指数', type: 'line', data: [100.1, 100.0, 99.6, 99.7, 100.2] },
-        { name: '食品烟酒类', type: 'line', data: [100.1, 99.2, 97.5, 97.4, 98.4] },
-        { name: '衣着类', type: 'line', data: [101.6, 101.7, 101.8, 101.7, 101.7] },
-        { name: '居住类', type: 'line', data: [100.1, 100.1, 100.1, 100.1, 100.1] },
-        { name: '生活用品及服务类', type: 'line', data: [100.7, 101.2, 101.8, 102.2, 101.9] },
-        { name: '交通通信类', type: 'line', data: [96.3, 96.9, 97.6, 98.0, 98.5] },
-        { name: '教育文化娱乐类', type: 'line', data: [101.0, 100.9, 101.0, 100.8, 100.9] },
-        { name: '医疗保健类', type: 'line', data: [100.4, 100.5, 100.9, 101.1, 101.4] },
-        { name: '其他用品及服务类', type: 'line', data: [108.1, 108.0, 108.6, 109.9, 112.8] },
-        { name: '非食品', type: 'line', data: [100.1, 100.3, 100.5, 100.7, 100.9] },
-        { name: '消费品', type: 'line', data: [99.8, 99.6, 99.0, 99.2, 99.8] },
-        { name: '服务', type: 'line', data: [100.5, 100.5, 100.6, 100.6, 100.8] },
-        { name: '不包括食品和能源', type: 'line', data: [100.7, 100.8, 100.9, 101.0, 101.2] }
+        {name: 'CPI总体', type: 'line', data: [100.1, 100.0, 99.6, 99.7, 100.2], lineStyle: {width: 4}, symbolSize: 8},
+        {name: '食品烟酒', type: 'line', data: [100.1, 99.2, 97.5, 97.4, 98.4]},
+        {name: '衣着', type: 'line', data: [101.6, 101.7, 101.8, 101.7, 101.7]},
+        {name: '居住', type: 'line', data: [100.1, 100.1, 100.1, 100.1, 100.1]},
+        {name: '生活用品及服务', type: 'line', data: [100.7, 101.2, 101.8, 102.2, 101.9]},
+        {name: '交通通信', type: 'line', data: [96.3, 96.9, 97.6, 98.0, 98.5]},
+        {name: '教育文化娱乐', type: 'line', data: [101.0, 100.9, 101.0, 100.8, 100.9]},
+        {name: '医疗保健', type: 'line', data: [100.4, 100.5, 100.9, 101.1, 101.4]},
+        {name: '其他用品及服务', type: 'line', data: [108.1, 108.0, 108.6, 109.9, 112.8]},
+        {name: '非食品', type: 'line', data: [100.1, 100.3, 100.5, 100.7, 100.9]},
+        {name: '消费品', type: 'line', data: [99.8, 99.6, 99.0, 99.2, 99.8]},
+        {name: '服务', type: 'line', data: [100.5, 100.5, 100.6, 100.6, 100.8]},
+        {name: '不包括食品能源', type: 'line', data: [100.7, 100.8, 100.9, 101.0, 101.2]}
     ]
 };
     c0.setOption(option0);
 
     var c1 = echarts.init(document.getElementById('chart_1'));
     var option1 = {
-    title: { text: '2025年10月各分类居民消费价格指数对比' },
-    tooltip: { trigger: 'axis' },
-    grid: { left: 140, right: 30, top: 40, bottom: 40 },
-    xAxis: { type: 'value', name: '指数(上年同月=100)' },
-    yAxis: {
+    title: {
+        text: '2025年10月各类CPI同比涨跌幅（与上年同月相比偏离100的幅度）',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function(params) {
+            var v = (params[0].value - 100).toFixed(1);
+            return params[0].name + '<br/>同比涨跌: ' + (v >= 0 ? '+' : '') + v + '%';
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        containLabel: true
+    },
+    xAxis: {
         type: 'category',
-        data: ['居民消费价格指数', '食品烟酒类', '衣着类', '居住类', '生活用品及服务类',
-               '交通通信类', '教育文化娱乐类', '医疗保健类', '其他用品及服务类',
-               '非食品', '消费品', '服务', '不包括食品和能源']
+        data: ['其他用品及服务', '生活用品及服务', '衣着', '医疗保健', '不包括食品能源', '非食品', '教育文娱', '服务', 'CPI总体', '居住', '消费品', '交通通信', '食品烟酒'],
+        axisLabel: { rotate: 30 }
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: { formatter: '{value}%' },
+        name: '同比涨跌(%)'
     },
     series: [{
+        name: '同比涨跌(%)',
         type: 'bar',
-        data: [100.2, 98.4, 101.7, 100.1, 101.9, 98.5, 100.9, 101.4, 112.8, 100.9, 99.8, 100.8, 101.2],
-        label: { show: true, position: 'right' }
-    }],
-    markLine: { silent: true }
+        data: [12.8, 1.9, 1.7, 1.4, 1.2, 0.9, 0.9, 0.8, 0.2, 0.1, -0.2, -1.5, -1.6],
+        label: {
+            show: true,
+            position: 'top',
+            formatter: function(p) { return (p.value >= 0 ? '+' : '') + p.value + '%'; }
+        },
+        itemStyle: {
+            color: function(params) {
+                return params.value >= 0 ? '#c23531' : '#2f4554';
+            }
+        }
+    }]
 };
     c1.setOption(option1);
 
     var c2 = echarts.init(document.getElementById('chart_2'));
     var option2 = {
-    title: { text: '各月分类指数分布箱线图' },
-    tooltip: { trigger: 'item' },
-    grid: { left: 60, right: 30, top: 60, bottom: 40 },
-    xAxis: { type: 'category', data: ['2025年6月', '2025年7月', '2025年8月', '2025年9月', '2025年10月'] },
-    yAxis: { type: 'value', name: '指数(上年同月=100)' },
-    series: [{
-        type: 'boxplot',
-        data: [
-            [96.3, 100.1, 100.4, 100.7, 108.1],
-            [96.9, 100.0, 100.5, 100.9, 108.0],
-            [97.5, 99.6, 100.6, 101.0, 108.6],
-            [97.4, 99.7, 100.7, 101.1, 109.9],
-            [98.4, 100.1, 100.9, 101.4, 112.8]
-        ]
-    }]
+    title: {
+        text: '各分类CPI区间分布（2025年6-10月）',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' }
+    },
+    legend: {
+        data: ['10月', '9月', '8月', '7月', '6月'],
+        bottom: 0
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '10%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        data: ['食品烟酒', '衣着', '居住', '生活用品及服务', '交通通信', '教育文娱', '医疗保健', '其他用品及服务'],
+        axisLabel: { rotate: 20 }
+    },
+    yAxis: {
+        type: 'value',
+        name: '指数'
+    },
+    series: [
+        {name: '6月', type: 'bar', data: [100.1, 101.6, 100.1, 100.7, 96.3, 101.0, 100.4, 108.1], barGap: '0%'},
+        {name: '7月', type: 'bar', data: [99.2, 101.7, 100.1, 101.2, 96.9, 100.9, 100.5, 108.0]},
+        {name: '8月', type: 'bar', data: [97.5, 101.8, 100.1, 101.8, 97.6, 101.0, 100.9, 108.6]},
+        {name: '9月', type: 'bar', data: [97.4, 101.7, 100.1, 102.2, 98.0, 100.8, 101.1, 109.9]},
+        {name: '10月', type: 'bar', data: [98.4, 101.7, 100.1, 101.9, 98.5, 100.9, 101.4, 112.8]}
+    ]
 };
     c2.setOption(option2);
 
     var c3 = echarts.init(document.getElementById('chart_3'));
     var option3 = {
-    title: { text: '2025年10月综合指数同比变化（对比上年同月）' },
-    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-    legend: { top: 30 },
-    grid: { left: 60, right: 30, top: 80, bottom: 40 },
-    xAxis: { type: 'category', data: ['居民消费\n价格指数', '食品烟酒', '衣着', '居住', '生活用品\n及服务', '交通通信', '教育文化\n娱乐', '医疗保健', '其他用品\n及服务'] },
-    yAxis: { type: 'value', name: '同比涨幅(%)' },
-    series: [
-        { name: '同比涨幅(%)', type: 'bar', data: [0.2, -1.6, 1.7, 0.1, 1.9, -1.5, 0.9, 1.4, 12.8], label: { show: true, position: 'top' } }
-    ]
+    title: {
+        text: '其他用品及服务 CPI（异常高增速类别）变动趋势',
+        left: 'center'
+    },
+    tooltip: { trigger: 'axis' },
+    grid: { left: '3%', right: '4%', containLabel: true },
+    xAxis: {
+        type: 'category',
+        data: ['2025年6月', '2025年7月', '2025年8月', '2025年9月', '2025年10月']
+    },
+    yAxis: {
+        type: 'value',
+        min: 105,
+        name: '指数',
+        axisLabel: { formatter: '{value}' }
+    },
+    series: [{
+        name: '其他用品及服务',
+        type: 'line',
+        data: [108.1, 108.0, 108.6, 109.9, 112.8],
+        lineStyle: { width: 4, color: '#c23531' },
+        itemStyle: { color: '#c23531' },
+        areaStyle: { opacity: 0.2 },
+        markPoint: {
+            data: [
+                {type: 'max', name: '最高'},
+                {type: 'min', name: '最低'}
+            ]
+        }
+    }]
 };
     c3.setOption(option3);
 

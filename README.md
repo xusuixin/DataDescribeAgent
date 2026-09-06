@@ -1,107 +1,97 @@
-# DataDescribeAgent - 智能数据分析助手
+# DataAnalysisAgent - 智能数据分析助手
 
-> 基于HelloAgents框架的智能数据分析工具
+> 基于 HelloAgents 框架（`SimpleAgent`）的智能数据分析工具：读取表格 → LLM 清洗 / 统计 / 可视化 / 报告。
 
 ## 📝 项目简介
 
-DataDescribeAgent是一个智能数据分析助手,能够自动分析数据、生成可视化图表、撰写分析报告。
+DataAnalysisAgent 是一个智能数据分析助手，能够自动分析数据、生成可视化图表（ECharts）、撰写分析报告（Markdown）。
+本项目由 Datawhale `hello-agents` 仓库中的 `Co-creation-projects/1zrj-DataAnalysisAgent` 改造而来：
+
+- 把 `main.ipynb` 改造成可直接运行的 `main.py`
+- 适配 `hello-agents` 1.0.0 的 `ToolResponse` API
+- 修复 `DataStatisticsTool` 漏写 `import numpy` 的隐藏 bug 并补齐工具注册
+- **默认使用 DeepSeek** 作为 LLM（OpenAI 兼容接口，支持 function calling）
 
 ### 核心功能
 
-- ✅ 数据分析：统计数据变化趋势，选用合适图表等
-- ✅ 智能建议：基于LLM提供可视化图表代码和分析报告
-- ✅ 报告生成：生成Markdown格式的分析
+- ✅ 数据清洗：调用 `data_cleaner` 工具按规则清洗表格数据（列筛选、去空、补零）
+- ✅ 数据统计：调用 `data_statistics` 工具做描述性统计（均值 / 中位数 / 标准差 / 分位数 / 类别分布）
+- ✅ 可视化：LLM 生成 ECharts 代码，抽取并渲染全部图表到 `output/echarts.html`
+- ✅ 报告生成：输出 Markdown 格式的 `output/report.md`
 
 ## 🛠️ 技术栈
 
-- HelloAgents框架（SimpleAgent）
-- Python AST模块（代码解析）
-- OpenAI API（智能分析）
+- HelloAgents 框架（`SimpleAgent` + 自定义 `Tool`）
+- DeepSeek（`deepseek-chat`，OpenAI 兼容接口）
+- pandas / numpy（数据处理）
+- ECharts（前端可视化）
 
 ## 🚀 快速开始
 
-### 安装依赖
+### 1. 安装依赖（建议使用虚拟环境）
 
 ```bash
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
 pip install -r requirements.txt
 ```
 
-### 配置LLM参数
-
-**方式1: 使用.env文件(推荐)**
+### 2. 配置 LLM（推荐用 .env）
 
 ```bash
-# 复制示例文件
-cp .env.example .env
-
-# 编辑.env文件,填入你的配置
-# LLM_MODEL_ID=Qwen/Qwen2.5-72B-Instruct
-# LLM_API_KEY=your_api_key_here
-# LLM_BASE_URL=https://api-inference.modelscope.cn/v1/
+cp .env.example .env          # Windows:  copy .env.example .env
+# 然后编辑 .env，填入你的 DeepSeek Key
 ```
 
-**方式2: 直接在Notebook中设置(已配置)**
+`.env` 示例（默认即 DeepSeek）：
 
-项目已在`main.ipynb`中预配置了ModelScope的API,可以直接使用。如需修改,编辑第1部分的配置代码:
-
-```python
-os.environ["LLM_MODEL_ID"] = "your_model"
-os.environ["LLM_API_KEY"] = "your_key"
-os.environ["LLM_BASE_URL"] = "your_api_url"
+```ini
+LLM_MODEL_ID=deepseek-chat
+LLM_API_KEY=你的_deepseek_key
+LLM_BASE_URL=https://api.deepseek.com/v1
+LLM_TIMEOUT=60
 ```
 
-### 运行项目
+> DeepSeek Key 申请：https://platform.deepseek.com
+> 想换其它 OpenAI 兼容服务（OpenAI / 硅基流动 / 本地 Ollama 等）？只改 `.env` 里的三个值即可，`main.py` 无需改动。
+
+### 3. 运行
 
 ```bash
-jupyter lab
-# 打开main.ipynb并运行所有单元格
+python main.py
 ```
 
-## 📖 使用示例
-
-### 快速体验
-
-打开`main.ipynb`,运行「第0部分：快速演示」,即可快速了解项目功能。
-
-### 完整功能
-
-1. 将待分析数据表格放入`data`
-2. 依次运行`main.ipynb`
-3. 查看生成的图表`outputs/echarts.html`
-4. 查看生成的数据分析报告`outputs/report.md`
-
-
+运行后会在 `output/` 下生成 `echarts.html` 与 `report.md`。
 
 ## 📂 项目结构
 
 ```
-jjyaoao-CodeReviewAgent/
-├── README.md              # 项目说明文档
-├── requirements.txt       # 依赖列表
-├── .gitignore            # Git忽略文件
-├── .env.example          # 环境变量示例
-├── main.ipynb            # 主程序(包含快速演示和完整功能)
+DataAnalysisAgent/
+├── README.md           # 项目说明
+├── requirements.txt    # 依赖列表
+├── .gitignore          # 忽略 .env / .venv
+├── .env.example        # 环境变量示例（占位符）
+├── .env                # 你的真实密钥（本地用，不提交）
+├── main.py             # 主程序（由 main.ipynb 改造）
 ├── data/
-│   └──    # 示例代码
-└── outputs/
-    └── report.md  # 数据分析报告
-    └── echarts.html  # 图表html
+│   └── simple_data.xls # 示例数据
+└── output/
+    ├── echarts.html    # 生成的图表
+    └── report.md       # 生成的报告
 ```
 
 ## 🔧 技术实现
 
 ### 工具系统
 
-1. **DataCleaningTool**: 数据清洗工具 - 基于用户指定规则清洗表格数据
-2. **DataStatisticsTool**: 数据统计工具 - 提供描述性统计分析
+1. **DataCleaningTool**：数据清洗工具 —— 基于规则清洗表格数据
+2. **DataStatisticsTool**：数据统计工具 —— 提供描述性统计分析（容错解析多种输入结构）
 
 ### 智能体设计
 
-使用HelloAgents的SimpleAgent,配合自定义工具实现智能代码审查。
-
-```
+使用 HelloAgents 的 `SimpleAgent`，配合自定义工具与 system prompt 完成「清洗 → 统计 → 可视化 → 报告」的流水线。
 
 ## 🙏 致谢
 
-感谢Datawhale社区和Hello-Agents项目！
-
+感谢 Datawhale 社区与 Hello-Agents 项目！
