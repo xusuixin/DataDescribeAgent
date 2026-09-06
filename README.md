@@ -1,10 +1,10 @@
-# DataAnalysisAgent - 智能数据分析助手
+# DataDescribeAgent - 智能数据分析助手
 
 > 基于HelloAgents框架的智能数据分析工具
 
 ## 📝 项目简介
 
-DataAnalysisAgent是一个智能数据分析助手,能够自动分析数据、生成可视化图表、撰写分析报告。
+DataDescribeAgent是一个智能数据分析助手,能够自动分析数据、生成可视化图表、撰写分析报告。
 
 ### 核心功能
 
